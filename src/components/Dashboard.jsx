@@ -1,5 +1,16 @@
 import React from 'react';
 import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
+import { 
   LayoutDashboard, 
   Package, 
   ShoppingCart, 
@@ -11,10 +22,26 @@ import {
   DollarSign, 
   ShoppingBag, 
   Users,
-  Plus,
-  BarChart2,
   Users2
 } from 'lucide-react';
+
+// Sales Overview Data
+const salesData = [
+  { name: 'Jan', sales: 4000 },
+  { name: 'Feb', sales: 3000 },
+  { name: 'Mar', sales: 5000 },
+  { name: 'Apr', sales: 4500 },
+  { name: 'May', sales: 6000 },
+  { name: 'Jun', sales: 5500 },
+];
+
+// Product Categories Data
+const categoryData = [
+  { name: 'Electronics 40%', value: 40, color: '#0088FF' },
+  { name: 'Clothing 30%', value: 30, color: '#00C897' },
+  { name: 'Food 20%', value: 20, color: '#FF9900' },
+  { name: 'Other 10%', value: 10, color: '#FF4D4D' },
+];
 
 export default function Dashboard({ formData }) {
   const recentOrders = [
@@ -162,97 +189,120 @@ export default function Dashboard({ formData }) {
           </div>
         </div>
 
-        {/* Charts Row */}
+        {/* Charts Row using Recharts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           {/* Sales Overview Card */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
             <div className="mb-4">
-              <h3 className="text-sm font-semibold text-[#0F172A]">Sales Overview</h3>
-              <p className="text-xs text-slate-400">Monthly sales and order trends</p>
+              <h3 className="text-base font-medium text-[#0F172A]">Sales Overview</h3>
+              <p className="text-sm text-slate-500 mt-0.5">Monthly sales and order trends</p>
             </div>
 
-            {/* Area Chart Container */}
-            <div className="relative w-full h-[220px] pt-4">
-              <div className="absolute inset-0 flex flex-col justify-between text-[10px] text-slate-400">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 text-right">6000</span>
-                  <div className="flex-1 border-b border-dashed border-slate-200"></div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-6 text-right">4500</span>
-                  <div className="flex-1 border-b border-dashed border-slate-200"></div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-6 text-right">3000</span>
-                  <div className="flex-1 border-b border-dashed border-slate-200"></div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-6 text-right">1500</span>
-                  <div className="flex-1 border-b border-dashed border-slate-200"></div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="w-6 text-right">0</span>
-                  <div className="flex-1 border-b border-slate-300"></div>
-                </div>
-              </div>
-
-              {/* Area SVG Overlay */}
-              <div className="absolute left-8 right-0 top-2 bottom-5">
-                <svg className="w-full h-full overflow-visible" viewBox="0 0 300 160" preserveAspectRatio="none">
+            <div className="w-full h-[260px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={salesData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
-                    <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#64748B" stopOpacity="0.4" />
-                      <stop offset="100%" stopColor="#94A3B8" stopOpacity="0.02" />
+                    <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#CBD5E1" stopOpacity={0.9}/>
+                      <stop offset="95%" stopColor="#CBD5E1" stopOpacity={0.3}/>
                     </linearGradient>
                   </defs>
-                  
-                  <path
-                    d="M 0,70 Q 30,120 60,110 T 120,40 T 180,60 T 240,10 T 300,30 L 300,160 L 0,160 Z"
-                    fill="url(#areaGradient)"
-                  />
-                  <path
-                    d="M 0,70 Q 30,120 60,110 T 120,40 T 180,60 T 240,10 T 300,30"
-                    fill="none"
-                    stroke="#1E293B"
-                    strokeWidth="2"
-                  />
-                </svg>
-              </div>
 
-              {/* X-Axis Labels */}
-              <div className="absolute bottom-0 left-8 right-0 flex justify-between text-[10px] text-slate-400">
-                <span>Jan</span>
-                <span>Feb</span>
-                <span>Mar</span>
-                <span>Apr</span>
-                <span>May</span>
-                <span>Jun</span>
-              </div>
+                  <CartesianGrid strokeDasharray="2 2" vertical={true} stroke="#E2E8F0" />
+                  
+                  <XAxis 
+                    dataKey="name" 
+                    axisLine={{ stroke: '#64748B' }} 
+                    tickLine={{ stroke: '#64748B' }} 
+                    tick={{ fontSize: 11, fill: '#64748B' }} 
+                  />
+                  
+                  <YAxis 
+                    domain={[0, 6000]} 
+                    ticks={[0, 1500, 3000, 4500, 6000]} 
+                    axisLine={{ stroke: '#64748B' }} 
+                    tickLine={{ stroke: '#64748B' }} 
+                    tick={{ fontSize: 11, fill: '#64748B' }} 
+                  />
+
+                  <Area 
+                    id="salesOverviewArea"
+                    type="monotone" 
+                    dataKey="sales" 
+                    stroke="#0F172A" 
+                    strokeWidth={1.5} 
+                    fillOpacity={1} 
+                    fill="url(#salesGradient)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
           {/* Product Categories Pie Chart */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
-            <div>
-              <h3 className="text-sm font-semibold text-[#0F172A]">Product Categories</h3>
-              <p className="text-xs text-slate-400">Distribution by category</p>
-            </div>
+          {/* Product Categories Pie Chart */}
+<div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+  <div>
+    <h3 className="text-sm font-semibold text-[#0F172A]">Product Categories</h3>
+    <p className="text-xs text-slate-400 mt-0.5">Distribution by category</p>
+  </div>
 
-            <div className="relative my-6 flex items-center justify-center h-48">
-              <div 
-                className="w-40 h-40 rounded-full shadow-inner"
-                style={{
-                  background: 'conic-gradient(#0088FF 0deg 144deg, #FF9900 144deg 216deg, #00C897 216deg 324deg, #FF4D4D 324deg 360deg)'
-                }}
-              ></div>
+  <div className="w-full h-[260px] flex items-center justify-center">
+    <ResponsiveContainer width="100%" height="100%">
+      <PieChart>
+        <Pie
+          data={[
+            { name: 'Electronics 40%', value: 40, color: '#0080FF' },
+            { name: 'Clothing 30%', value: 30, color: '#00C48C' },
+            { name: 'Food 20%', value: 20, color: '#FFB020' },
+            { name: 'Other 10%', value: 10, color: '#FF7043' },
+          ]}
+          cx="50%"
+          cy="50%"
+          innerRadius={0}
+          outerRadius={75}
+          dataKey="value"
+          startAngle={90}
+          endAngle={-270}
+          stroke="#ffffff"
+          strokeWidth={1.5}
+          label={({ cx, cy, midAngle, outerRadius, name, color }) => {
+            const RADIAN = Math.PI / 180;
+            // Position labels outside the pie chart without lines
+            const radius = outerRadius + 22;
+            const x = cx + radius * Math.cos(-midAngle * RADIAN);
+            const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-              <span className="absolute top-2 right-12 text-[11px] font-medium text-[#0088FF]">Electronics 40%</span>
-              <span className="absolute bottom-4 right-14 text-[11px] font-medium text-[#FF9900]">Food 20%</span>
-              <span className="absolute bottom-12 left-6 text-[11px] font-medium text-[#00C897]">Clothing 30%</span>
-              <span className="absolute top-16 right-4 text-[11px] font-medium text-[#FF4D4D]">Other 10%</span>
-            </div>
-          </div>
+            return (
+              <text
+                x={x}
+                y={y}
+                fill={color}
+                textAnchor={x > cx ? 'start' : 'end'}
+                dominantBaseline="central"
+                fontSize={12}
+                fontWeight={500}
+              >
+                {name}
+              </text>
+            );
+          }}
+          labelLine={false}
+        >
+          {[
+            { name: 'Electronics 40%', value: 40, color: '#0080FF' },
+            { name: 'Clothing 30%', value: 30, color: '#00C48C' },
+            { name: 'Food 20%', value: 20, color: '#FFB020' },
+            { name: 'Other 10%', value: 10, color: '#FF7043' },
+          ].map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.color} />
+          ))}
+        </Pie>
+      </PieChart>
+    </ResponsiveContainer>
+  </div>
+</div>
 
         </div>
 
@@ -290,8 +340,6 @@ export default function Dashboard({ formData }) {
 
         {/* Bottom Quick Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          
-          {/* Action 1 */}
           <button className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-slate-300 transition-all cursor-pointer group">
             <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3 text-[#0F172A] group-hover:bg-[#0F172A] group-hover:text-white transition-colors">
               <Package className="w-5 h-5" />
@@ -300,7 +348,6 @@ export default function Dashboard({ formData }) {
             <p className="text-[11px] text-slate-400 leading-snug">List a new product in your catalog</p>
           </button>
 
-          {/* Action 2 */}
           <button className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-slate-300 transition-all cursor-pointer group">
             <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3 text-[#0F172A] group-hover:bg-[#0F172A] group-hover:text-white transition-colors">
               <TrendingUp className="w-5 h-5" />
@@ -309,7 +356,6 @@ export default function Dashboard({ formData }) {
             <p className="text-[11px] text-slate-400 leading-snug">Detailed insights and reports</p>
           </button>
 
-          {/* Action 3 */}
           <button className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-slate-300 transition-all cursor-pointer group">
             <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3 text-[#0F172A] group-hover:bg-[#0F172A] group-hover:text-white transition-colors">
               <Users2 className="w-5 h-5" />
@@ -317,7 +363,6 @@ export default function Dashboard({ formData }) {
             <h4 className="text-xs font-bold text-[#0F172A] mb-1">Manage Retailers</h4>
             <p className="text-[11px] text-slate-400 leading-snug">Connect with your partners</p>
           </button>
-
         </div>
 
       </main>
