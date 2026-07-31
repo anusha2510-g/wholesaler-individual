@@ -7,11 +7,15 @@ import Step4AddressWarehouse from './components/Step4AddressWarehouse';
 import Step5Verification from './components/Step5Verification';
 import Step6Review from './components/Step6Review';
 import Dashboard from './components/Dashboard';
+import ProductCatalog from './components/ProductCatalog';
 
 export default function App() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
-  const [isSubmitted, setIsSubmitted] = useState(false); // New state to show dashboard
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  // Tracks active dashboard view ('dashboard' | 'products' | 'orders' | etc.)
+  const [activeView, setActiveView] = useState('dashboard'); 
 
   const handleNext = () => setCurrentStep((prev) => Math.min(prev + 1, 6));
   const handleBack = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
@@ -21,14 +25,33 @@ export default function App() {
   };
 
   const handleSubmit = () => {
-    setIsSubmitted(true); // Switch view to Dashboard
+    setIsSubmitted(true);
   };
 
-  // If registration is complete, render Dashboard
+  // Render view router after registration is complete
   if (isSubmitted) {
-    return <Dashboard formData={formData} />;
+    switch (activeView) {
+      case 'products':
+        return (
+          <ProductCatalog 
+            formData={formData} 
+            activeView={activeView} 
+            setActiveView={setActiveView} 
+          />
+        );
+      case 'dashboard':
+      default:
+        return (
+          <Dashboard 
+            formData={formData} 
+            activeView={activeView} 
+            setActiveView={setActiveView} 
+          />
+        );
+    }
   }
 
+  // Registration Flow
   return (
     <RegistrationLayout currentStep={currentStep} totalSteps={6}>
       {currentStep === 1 && (

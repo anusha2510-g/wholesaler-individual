@@ -35,15 +35,7 @@ const salesData = [
   { name: 'Jun', sales: 5500 },
 ];
 
-// Product Categories Data
-const categoryData = [
-  { name: 'Electronics 40%', value: 40, color: '#0088FF' },
-  { name: 'Clothing 30%', value: 30, color: '#00C897' },
-  { name: 'Food 20%', value: 20, color: '#FF9900' },
-  { name: 'Other 10%', value: 10, color: '#FF4D4D' },
-];
-
-export default function Dashboard({ formData }) {
+export default function Dashboard({ formData, activeView = 'dashboard', setActiveView }) {
   const recentOrders = [
     { id: '#12345', status: 'Delivered', customer: 'ABC Retail Store', amount: '$2,450', date: '2025-10-10' },
     { id: '#12346', status: 'In Transit', customer: 'XYZ Market', amount: '$1,850', date: '2025-10-09' },
@@ -78,38 +70,85 @@ export default function Dashboard({ formData }) {
             <span className="font-bold text-sm tracking-wide text-[#0F172A]">B2B Platform</span>
           </div>
 
-          {/* Navigation Links */}
+          {/* Navigation Links with View Switching */}
           <nav className="p-4 space-y-1 text-xs font-medium">
-            <a href="#" className="flex items-center gap-3 px-4 py-3 bg-[#0F172A] text-white rounded-xl shadow-sm">
+            <button
+              onClick={() => setActiveView && setActiveView('dashboard')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
+                activeView === 'dashboard'
+                  ? 'bg-[#0F172A] text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
               <LayoutDashboard className="w-4 h-4" />
               Dashboard
-            </a>
-            <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl transition-colors">
+            </button>
+
+            <button
+              onClick={() => setActiveView && setActiveView('products')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
+                activeView === 'products'
+                  ? 'bg-[#0F172A] text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
               <Package className="w-4 h-4" />
               Products
-            </a>
-            <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl transition-colors justify-between">
+            </button>
+
+            <button
+              onClick={() => setActiveView && setActiveView('orders')}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors ${
+                activeView === 'orders'
+                  ? 'bg-[#0F172A] text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
               <span className="flex items-center gap-3">
                 <ShoppingCart className="w-4 h-4" />
                 Orders
               </span>
               <span className="bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">3</span>
-            </a>
-            <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl transition-colors">
+            </button>
+
+            <button
+              onClick={() => setActiveView && setActiveView('shipping')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
+                activeView === 'shipping'
+                  ? 'bg-[#0F172A] text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
               <Truck className="w-4 h-4" />
               Shipping
-            </a>
-            <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl transition-colors justify-between">
+            </button>
+
+            <button
+              onClick={() => setActiveView && setActiveView('messages')}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors ${
+                activeView === 'messages'
+                  ? 'bg-[#0F172A] text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
               <span className="flex items-center gap-3">
                 <MessageSquare className="w-4 h-4" />
                 Messages
               </span>
               <span className="bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">5</span>
-            </a>
-            <a href="#" className="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl transition-colors">
+            </button>
+
+            <button
+              onClick={() => setActiveView && setActiveView('admin')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
+                activeView === 'admin'
+                  ? 'bg-[#0F172A] text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
               <Shield className="w-4 h-4" />
               Admin
-            </a>
+            </button>
           </nav>
         </div>
 
@@ -189,7 +228,7 @@ export default function Dashboard({ formData }) {
           </div>
         </div>
 
-        {/* Charts Row using Recharts */}
+        {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           {/* Sales Overview Card */}
@@ -241,68 +280,66 @@ export default function Dashboard({ formData }) {
           </div>
 
           {/* Product Categories Pie Chart */}
-          {/* Product Categories Pie Chart */}
-<div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
-  <div>
-    <h3 className="text-sm font-semibold text-[#0F172A]">Product Categories</h3>
-    <p className="text-xs text-slate-400 mt-0.5">Distribution by category</p>
-  </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between">
+            <div>
+              <h3 className="text-sm font-semibold text-[#0F172A]">Product Categories</h3>
+              <p className="text-xs text-slate-400 mt-0.5">Distribution by category</p>
+            </div>
 
-  <div className="w-full h-[260px] flex items-center justify-center">
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart>
-        <Pie
-          data={[
-            { name: 'Electronics 40%', value: 40, color: '#0080FF' },
-            { name: 'Clothing 30%', value: 30, color: '#00C48C' },
-            { name: 'Food 20%', value: 20, color: '#FFB020' },
-            { name: 'Other 10%', value: 10, color: '#FF7043' },
-          ]}
-          cx="50%"
-          cy="50%"
-          innerRadius={0}
-          outerRadius={75}
-          dataKey="value"
-          startAngle={90}
-          endAngle={-270}
-          stroke="#ffffff"
-          strokeWidth={1.5}
-          label={({ cx, cy, midAngle, outerRadius, name, color }) => {
-            const RADIAN = Math.PI / 180;
-            // Position labels outside the pie chart without lines
-            const radius = outerRadius + 22;
-            const x = cx + radius * Math.cos(-midAngle * RADIAN);
-            const y = cy + radius * Math.sin(-midAngle * RADIAN);
+            <div className="w-full h-[260px] flex items-center justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={[
+                      { name: 'Electronics 40%', value: 40, color: '#0080FF' },
+                      { name: 'Clothing 30%', value: 30, color: '#00C48C' },
+                      { name: 'Food 20%', value: 20, color: '#FFB020' },
+                      { name: 'Other 10%', value: 10, color: '#FF7043' },
+                    ]}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={0}
+                    outerRadius={75}
+                    dataKey="value"
+                    startAngle={90}
+                    endAngle={-270}
+                    stroke="#ffffff"
+                    strokeWidth={1.5}
+                    label={({ cx, cy, midAngle, outerRadius, name, color }) => {
+                      const RADIAN = Math.PI / 180;
+                      const radius = outerRadius + 22;
+                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-            return (
-              <text
-                x={x}
-                y={y}
-                fill={color}
-                textAnchor={x > cx ? 'start' : 'end'}
-                dominantBaseline="central"
-                fontSize={12}
-                fontWeight={500}
-              >
-                {name}
-              </text>
-            );
-          }}
-          labelLine={false}
-        >
-          {[
-            { name: 'Electronics 40%', value: 40, color: '#0080FF' },
-            { name: 'Clothing 30%', value: 30, color: '#00C48C' },
-            { name: 'Food 20%', value: 20, color: '#FFB020' },
-            { name: 'Other 10%', value: 10, color: '#FF7043' },
-          ].map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={entry.color} />
-          ))}
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
-  </div>
-</div>
+                      return (
+                        <text
+                          x={x}
+                          y={y}
+                          fill={color}
+                          textAnchor={x > cx ? 'start' : 'end'}
+                          dominantBaseline="central"
+                          fontSize={12}
+                          fontWeight={500}
+                        >
+                          {name}
+                        </text>
+                      );
+                    }}
+                    labelLine={false}
+                  >
+                    {[
+                      { name: 'Electronics 40%', value: 40, color: '#0080FF' },
+                      { name: 'Clothing 30%', value: 30, color: '#00C48C' },
+                      { name: 'Food 20%', value: 20, color: '#FFB020' },
+                      { name: 'Other 10%', value: 10, color: '#FF7043' },
+                    ].map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
 
         </div>
 
@@ -340,7 +377,10 @@ export default function Dashboard({ formData }) {
 
         {/* Bottom Quick Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <button className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-slate-300 transition-all cursor-pointer group">
+          <button 
+            onClick={() => setActiveView && setActiveView('products')}
+            className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-slate-300 transition-all cursor-pointer group"
+          >
             <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3 text-[#0F172A] group-hover:bg-[#0F172A] group-hover:text-white transition-colors">
               <Package className="w-5 h-5" />
             </div>
