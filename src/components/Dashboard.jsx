@@ -57,7 +57,7 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex font-sans antialiased text-[#0F172A]">
+    <div className="min-h-screen bg-[#F8FAFC] flex font-sans antialiased text-[#0F172A] w-full">
       
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0">
@@ -70,9 +70,10 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
             <span className="font-bold text-sm tracking-wide text-[#0F172A]">B2B Platform</span>
           </div>
 
-          {/* Navigation Links with View Switching */}
+          {/* Navigation Links */}
           <nav className="p-4 space-y-1 text-xs font-medium">
             <button
+              type="button"
               onClick={() => setActiveView && setActiveView('dashboard')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                 activeView === 'dashboard'
@@ -81,10 +82,11 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
               }`}
             >
               <LayoutDashboard className="w-4 h-4" />
-              Dashboard
+              <span>Dashboard</span>
             </button>
 
             <button
+              type="button"
               onClick={() => setActiveView && setActiveView('products')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                 activeView === 'products'
@@ -93,10 +95,11 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
               }`}
             >
               <Package className="w-4 h-4" />
-              Products
+              <span>Products</span>
             </button>
 
             <button
+              type="button"
               onClick={() => setActiveView && setActiveView('orders')}
               className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors ${
                 activeView === 'orders'
@@ -104,14 +107,17 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
                   : 'text-slate-600 hover:bg-slate-50'
               }`}
             >
-              <span className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
                 <ShoppingCart className="w-4 h-4" />
-                Orders
+                <span>Orders</span>
+              </div>
+              <span className="bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                3
               </span>
-              <span className="bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">3</span>
             </button>
 
             <button
+              type="button"
               onClick={() => setActiveView && setActiveView('shipping')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                 activeView === 'shipping'
@@ -120,10 +126,11 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
               }`}
             >
               <Truck className="w-4 h-4" />
-              Shipping
+              <span>Shipping</span>
             </button>
 
             <button
+              type="button"
               onClick={() => setActiveView && setActiveView('messages')}
               className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-colors ${
                 activeView === 'messages'
@@ -131,14 +138,17 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
                   : 'text-slate-600 hover:bg-slate-50'
               }`}
             >
-              <span className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
                 <MessageSquare className="w-4 h-4" />
-                Messages
+                <span>Messages</span>
+              </div>
+              <span className="bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                5
               </span>
-              <span className="bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">5</span>
             </button>
 
             <button
+              type="button"
               onClick={() => setActiveView && setActiveView('admin')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
                 activeView === 'admin'
@@ -147,7 +157,7 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
               }`}
             >
               <Shield className="w-4 h-4" />
-              Admin
+              <span>Admin</span>
             </button>
           </nav>
         </div>
@@ -228,7 +238,7 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
           </div>
         </div>
 
-        {/* Charts Row */}
+        {/* Charts Row using Recharts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
           {/* Sales Overview Card */}
@@ -378,6 +388,7 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
         {/* Bottom Quick Action Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button 
+            type="button"
             onClick={() => setActiveView && setActiveView('products')}
             className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-slate-300 transition-all cursor-pointer group"
           >
@@ -388,7 +399,10 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
             <p className="text-[11px] text-slate-400 leading-snug">List a new product in your catalog</p>
           </button>
 
-          <button className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-slate-300 transition-all cursor-pointer group">
+          <button 
+            type="button"
+            className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-slate-300 transition-all cursor-pointer group"
+          >
             <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3 text-[#0F172A] group-hover:bg-[#0F172A] group-hover:text-white transition-colors">
               <TrendingUp className="w-5 h-5" />
             </div>
@@ -396,7 +410,10 @@ export default function Dashboard({ formData, activeView = 'dashboard', setActiv
             <p className="text-[11px] text-slate-400 leading-snug">Detailed insights and reports</p>
           </button>
 
-          <button className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-slate-300 transition-all cursor-pointer group">
+          <button 
+            type="button"
+            className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm text-left hover:border-slate-300 transition-all cursor-pointer group"
+          >
             <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-3 text-[#0F172A] group-hover:bg-[#0F172A] group-hover:text-white transition-colors">
               <Users2 className="w-5 h-5" />
             </div>
